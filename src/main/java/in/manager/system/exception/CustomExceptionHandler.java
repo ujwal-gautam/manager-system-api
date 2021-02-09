@@ -82,6 +82,16 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(responseBody, HttpStatus.NON_AUTHORITATIVE_INFORMATION);
     }
 
+   /* @ExceptionHandler(SqlException.class)
+    public final ResponseEntity<Object> sqlException(JwtTokenMissingException ex,
+                                                                       WebRequest request) {
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("errorCode", "CDT-004");
+        responseBody.put("error", ex.getMessage());
+        exceptionLogger.error(ex.getMessage(), ex);
+        return new ResponseEntity<>(responseBody, HttpStatus.NON_AUTHORITATIVE_INFORMATION);
+    }*/
+
     /**
      * Handle MissingServletRequestParameterException. Triggered when a 'required'
      * request parameter is missing.

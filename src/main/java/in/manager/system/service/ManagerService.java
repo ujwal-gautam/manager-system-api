@@ -2,7 +2,6 @@ package in.manager.system.service;
 
 
 import in.manager.system.model.Manager;
-import in.manager.system.model.ManagerVo;
 import in.manager.system.repository.ManagerRepository;
 import in.manager.system.util.APIConstants;
 import in.manager.system.util.ResponseMessage;

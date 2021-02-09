@@ -1,8 +1,8 @@
 package in.manager.system.service;
 
+import in.manager.system.dto.ManagerVo;
 import in.manager.system.model.CustomUserDetails;
 import in.manager.system.model.Manager;
-import in.manager.system.model.ManagerVo;
 import in.manager.system.repository.ManagerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
