@@ -2,7 +2,14 @@ package in.manager.system.dto;
 
 import java.math.BigInteger;
 
-public interface ManagerVo {
+/**
+ * @author cropdata-ujwal
+ * @package in.manager.system.dto
+ * @date 06/02/21
+ * @time 5:47 PM
+ */
+public interface ManagerVo
+{
     Integer getId();
 
     String getFirstName();

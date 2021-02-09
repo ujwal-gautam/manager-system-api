@@ -5,6 +5,7 @@ import in.manager.system.model.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+
 /**
  * @author ujwal-gautam
  * @date 06/02/21

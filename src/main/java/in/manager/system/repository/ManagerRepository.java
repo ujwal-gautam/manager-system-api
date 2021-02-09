@@ -1,7 +1,7 @@
 package in.manager.system.repository;
 
+import in.manager.system.dto.ManagerVo;
 import in.manager.system.model.Manager;
-import in.manager.system.model.ManagerVo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

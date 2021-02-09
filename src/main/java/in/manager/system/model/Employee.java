@@ -30,6 +30,9 @@ public class Employee
 	@Column(name = "address")
 	private String address;
 
+	@Column(name = "email_id")
+	private String emailId;
+
 	@Column(name = "mobile")
 	private BigInteger mobile;
 

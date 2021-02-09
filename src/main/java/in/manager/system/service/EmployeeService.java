@@ -9,6 +9,7 @@ import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class EmployeeService {
     ResponseMessageUtil responseMessageUtil;
 
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+        return employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "firstName", "lastName"));
     }
 
     public ResponseMessage addEmployee(Employee employee) {
@@ -54,11 +55,12 @@ public class EmployeeService {
             if (foundEmployee.isPresent()) {
 
                 employee.setId(id);
+                employee.setStatus(APIConstants.STATUS_INACTIVE);
 
                 employeeRepository.save(employee);
 
                 return responseMessageUtil.sendResponse(true,
-                        "Updated employee : " + employee.getFirstName(), "");
+                        APIConstants.RESPONSE_UPDATE_SUCCESS + id, "");
             } else {
                 return responseMessageUtil.sendResponse(false, "",
                         "Unable to update employee, Employee not found");
