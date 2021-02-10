@@ -3,6 +3,8 @@ package in.manager.system.service;
 import in.manager.system.model.CustomUserDetails;
 import in.manager.system.model.Manager;
 import in.manager.system.repository.ManagerRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,12 +22,14 @@ import java.util.Optional;
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtUserDetailsService.class);
     @Autowired
     ManagerRepository managerRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Optional<Manager> foundUsersDetail = managerRepository.findManagerByEmail(email.trim());
+        LOGGER.info("email Id is --> {}", email);
+        Optional<Manager> foundUsersDetail = managerRepository.findManagerByEmail(email.trim());
         Manager managerDetail = null;
         if (foundUsersDetail.isPresent()) {
             managerDetail = new Manager();

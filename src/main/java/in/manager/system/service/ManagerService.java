@@ -38,10 +38,8 @@ public class ManagerService {
 
         try
         {
-
-//            ManagerVo foundManager = managerRepository.findByEmail(manager.getEmail());
-
             if (!(managerRepository.findManagerByEmail(manager.getEmail()).isPresent())) {
+                LOGGER.info("set Role ---> {}", "manager");
                 manager.setUserRole("Manager");
                 manager.setPassword(bcryptEncoder.encode(manager.getPassword()));
                 managerRepository.save(manager);

@@ -22,7 +22,8 @@ import java.util.Optional;
  */
 
 @Service
-public class EmployeeService {
+public class EmployeeService
+{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
 
@@ -32,83 +33,115 @@ public class EmployeeService {
     @Autowired
     ResponseMessageUtil responseMessageUtil;
 
-    public List<Employee> getAllEmployees() {
+    public List<Employee> getAllEmployees()
+    {
         return employeeRepository.findAll(Sort.by(Sort.Direction.ASC, "firstName", "lastName"));
     }
 
-    public ResponseMessage addEmployee(Employee employee) {
-        try {
+    public ResponseMessage addEmployee(Employee employee)
+    {
+        try
+        {
             Optional<Employee> existEmployee = employeeRepository.findEmployeeByEmailId(employee.getEmailId());
-            if (!(existEmployee.isPresent())) {
+            LOGGER.info("check employee already exist or not ----> {}", existEmployee.isPresent());
+            if (!(existEmployee.isPresent()))
+            {
+                LOGGER.info("storing employee details.....");
                 employee.setStatus(APIConstants.STATUS_INACTIVE);
                 employee = employeeRepository.save(employee);
+                LOGGER.info("successfully added employee details.");
                 return responseMessageUtil.sendResponse(true, "Employee add successfully - " + employee.getFirstName(), "");
-            } else {
-                return responseMessageUtil.sendResponse(false, "", "Given Email Id( "+ employee.getEmailId()+" ) Already exist,Please choose different email Id");
+            } else
+            {
+                LOGGER.error("given email id already exist..");
+                return responseMessageUtil.sendResponse(false, "", "Given Email Id( " + employee.getEmailId() + " ) Already exist,Please choose different email Id");
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
+            LOGGER.warn("server error --> {}", e.getMessage());
             return responseMessageUtil.sendResponse(false, "", "Server Error : " + e.getMessage());
         }
     }
 
-    public ResponseMessage updateEmployeeById(Integer id, Employee employee) {
+    public ResponseMessage updateEmployeeById(Integer id, Employee employee)
+    {
 
-        try {
+        try
+        {
             Optional<Employee> foundEmployee = employeeRepository.findById(id);
 
-            if (foundEmployee.isPresent()) {
+            LOGGER.info("check employee already exist or not ----> {}", foundEmployee.isPresent());
 
+            if (foundEmployee.isPresent())
+            {
+                LOGGER.info("employee is found...");
                 employee.setId(id);
                 employee.setStatus(APIConstants.STATUS_INACTIVE);
 
                 employeeRepository.save(employee);
+                LOGGER.info("update employee details");
 
                 return responseMessageUtil.sendResponse(true,
                         APIConstants.RESPONSE_UPDATE_SUCCESS + id, "");
-            } else {
+            } else
+            {
                 return responseMessageUtil.sendResponse(false, "",
                         "Unable to update employee, Employee not found");
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
+            LOGGER.warn("Exception is ---> {}", e.getMessage());
             return responseMessageUtil.sendResponse(false, "", "Server Error : " + e.getMessage());
         }
     }
 
 
-    public ResponseMessage deleteEmployeeById(Integer id) {
-        try {
+    public ResponseMessage deleteEmployeeById(Integer id)
+    {
+        try
+        {
             Optional<Employee> foundEmployee = employeeRepository.findById(id);
 
-            if (foundEmployee.isPresent()) {
+            if (foundEmployee.isPresent())
+            {
 
                 Employee employee = foundEmployee.get();
                 employee.setStatus(APIConstants.STATUS_DELETED);
 
                 employee = employeeRepository.save(employee);
+                LOGGER.info("successfully soft delete...");
 
                 return responseMessageUtil.sendResponse(true,
                         "Employee Deleted Successfully : " + employee.getFirstName(), "");
 
-            } else {
+            } else
+            {
                 return responseMessageUtil.sendResponse(false, "",
                         "Unable to delete employee, Employee not found");
             }
 
-        } catch (Exception e){
+        } catch (Exception e)
+        {
+            LOGGER.warn("Exception is ---> {}", e.getMessage());
             return responseMessageUtil.sendResponse(false, "", "Server Error : " + e.getMessage());
         }
     }
 
-    public Employee findEmployeeById(int id) throws NotFoundException {
-        try {
+    public Employee findEmployeeById(int id) throws NotFoundException
+    {
+        try
+        {
             Optional<Employee> foundAgrochemicalMaster = employeeRepository.findById(id);
-            if (foundAgrochemicalMaster.isPresent()) {
+            if (foundAgrochemicalMaster.isPresent())
+            {
 
                 return foundAgrochemicalMaster.get();
-            } else {
+            } else
+            {
                 throw new NotFoundException("Employee Not Found With ID -> " + id);
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             throw e;
         }
     }
