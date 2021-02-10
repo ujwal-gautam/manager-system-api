@@ -1,6 +1,5 @@
 package in.manager.system.service;
 
-import in.manager.system.dto.ManagerVo;
 import in.manager.system.model.CustomUserDetails;
 import in.manager.system.model.Manager;
 import in.manager.system.repository.ManagerRepository;

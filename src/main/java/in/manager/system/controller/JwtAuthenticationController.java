@@ -21,7 +21,8 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
-public class JwtAuthenticationController {
+public class JwtAuthenticationController
+{
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -32,14 +33,21 @@ public class JwtAuthenticationController {
     @Autowired
     private JwtUserDetailsService userDetailsService;
 
+    /**
+     * It is authentication API base on request get username and password
+     * Validate and generate token
+     * @param authenticationRequest
+     */
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception
+    {
         authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
         final String token = jwtTokenUtil.generateToken(userDetails);
         Manager manager = null;
 
-        if (userDetails instanceof CustomUserDetails) {
+        if (userDetails instanceof CustomUserDetails)
+        {
             CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
             manager = customUserDetails.getManager();
             manager.setToken(token);
@@ -51,12 +59,21 @@ public class JwtAuthenticationController {
         return ResponseEntity.ok(dataMap);
     }
 
-    private void authenticate(String username, String password) throws Exception {
-        try {
+    /**
+     * authenticate  username and password
+     *@param username
+     *@param password
+     */
+    private void authenticate(String username, String password) throws Exception
+    {
+        try
+        {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException e) {
+        } catch (DisabledException e)
+        {
             throw new InactiveUserException("Inactive user name: " + username);
-        } catch (BadCredentialsException e) {
+        } catch (BadCredentialsException e)
+        {
             throw new InvalidUserCredentialsException("Please check username or password");
         }
     }
