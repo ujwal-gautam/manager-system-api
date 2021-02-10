@@ -24,4 +24,10 @@ public class ManagerController {
     public ResponseMessage register(@RequestBody Manager manager) {
        return managerService.register(manager);
     }
+
+    @PutMapping("/forget-password/{emailId}")
+    public ResponseMessage forgetPassword(@PathVariable("emailId") String emailId, @RequestBody Manager manager) {
+
+        return managerService.forgetPassword(emailId, manager);
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -25,15 +26,15 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		ManagerVo foundUsersDetail = managerRepository.findByEmail(email.trim());
+		Optional<Manager> foundUsersDetail = managerRepository.findManagerByEmail(email.trim());
         Manager managerDetail = null;
-        if (foundUsersDetail != null) {
+        if (foundUsersDetail.isPresent()) {
             managerDetail = new Manager();
 
-            managerDetail.setId(foundUsersDetail.getId());
-            managerDetail.setEmail(foundUsersDetail.getEmail());
-            managerDetail.setPassword(foundUsersDetail.getPassword());
-            managerDetail.setUserRole(foundUsersDetail.getUserRole());
+            managerDetail.setId(foundUsersDetail.get().getId());
+            managerDetail.setEmail(foundUsersDetail.get().getEmail());
+            managerDetail.setPassword(foundUsersDetail.get().getPassword());
+            managerDetail.setUserRole(foundUsersDetail.get().getUserRole());
 
             List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
             grantedAuthorities.add(new SimpleGrantedAuthority(managerDetail.getUserRole()));

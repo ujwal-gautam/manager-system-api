@@ -38,10 +38,14 @@ public class EmployeeService {
 
     public ResponseMessage addEmployee(Employee employee) {
         try {
-            employee.setStatus(APIConstants.STATUS_ACTIVE);
-            employee = employeeRepository.save(employee);
-
-            return responseMessageUtil.sendResponse(true, "Employee add successfully - " + employee.getFirstName(), "");
+            Optional<Employee> existEmployee = employeeRepository.findEmployeeByEmailId(employee.getEmailId());
+            if (!(existEmployee.isPresent())) {
+                employee.setStatus(APIConstants.STATUS_INACTIVE);
+                employee = employeeRepository.save(employee);
+                return responseMessageUtil.sendResponse(true, "Employee add successfully - " + employee.getFirstName(), "");
+            } else {
+                return responseMessageUtil.sendResponse(false, "", "Given Email Id( "+ employee.getEmailId()+" ) Already exist,Please choose different email Id");
+            }
         } catch (Exception e) {
             return responseMessageUtil.sendResponse(false, "", "Server Error : " + e.getMessage());
         }
